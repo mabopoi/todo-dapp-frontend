@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import ToDoApp from '../../ToDoAppABI.json';
 
-const deployerAddress = '0xACB96CFDEDc1200ADd35aD5E03F048370a45BAe6'; //add in .env file
+const deployAddress = process.env.REACT_APP_CONTRACT_ADDRESS as string;
 declare let window: any;
 
 const Task = () => {
@@ -9,11 +9,7 @@ const Task = () => {
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
-      const contract = new ethers.Contract(
-        deployerAddress,
-        ToDoApp.abi,
-        signer
-      );
+      const contract = new ethers.Contract(deployAddress, ToDoApp.abi, signer);
       const tx = await contract.deleteTask(id);
       await tx.wait();
     }
@@ -21,7 +17,7 @@ const Task = () => {
 
   return (
     <div>
-      <button onClick={() => deleteTask(0)}></button>
+      <button onClick={() => deleteTask(0)}>Delete</button>
     </div>
   );
 };
